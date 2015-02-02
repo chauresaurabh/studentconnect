@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>StudentConnect!</title>
+     <!-- Bootstrap core CSS 
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css"> -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+	<!-- <link href="jumbotron.css" rel="stylesheet"> -->    
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+           <a class="navbar-brand" href="login.html" style="color:#FFFFFF">StudentConnect !</a>
+        </div>
+       
+    
+        <div id="navbar" class="navbar-collapse collapse">
+        	    
+              <form class="navbar-form navbar-right">
+          <!--    
+        	   <div class="form-group">
+					  <input type="text" class="form-control" placeholder="Search" id="query" name="query" value="">
+					 	 <div class="form-group">
+							 <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+						 </div>
+				</div>
+ 			-->			
+ 			   <div class="input-group">
+					  <input type="text" class="form-control" placeholder="Seach StudentConnect!"
+					   id="query" name="query" value="">
+						  <div class="input-group-btn">
+						 <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+					 </div>
+			  </div>
+						             
+                    <div class="form-group">
+                      <input type="text" id="email" placeholder="Email" class="form-control" required="required">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" id="password" placeholder="Password" class="form-control">
+                    </div>
+                	<button type="button" id="signinbutton" class="btn btn-success">Sign in</button>
+                	<a href="signup.html" id="signupbutton" class="btn btn-primary">Sign up</a>
+               
+              </form>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main area for question answers -->
+    <div class="jumbotron" style="width:80%;height:900px;margin-left:10%;margin-right:10%">
+      <div class="container">
+        <h2>Question & Answers</h2>
+        <p>With StudentConnect, we plan to reach each and every student in need of information, thus making sure his journey towards reaching his goal is a smooth one.</p>
+       </div>
+    </div>
+   
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+   </body>
+   
+  <script type="text/javascript">
+  	 
+		function signin(){
+			 
+			$.ajax({
+	 			url: 'http://localhost:8080/studentconnect/api/controller/authenticate/'+ $('#email').val()+'/'+$('#password').val(),
+				type : 'GET',
+				dataType: 'json',
+				
+				success: function(data){
+  					 if( data.status == 1 )
+  						 	window.location="profile.html"
+  					 else
+  						 	alert('Invalid Login');
+				}
+	 		});	
+		}
+		$('#signinbutton').on('click', signin );
+		
+  </script>
+</html>
