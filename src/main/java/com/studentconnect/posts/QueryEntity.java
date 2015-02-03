@@ -13,6 +13,7 @@ public class QueryEntity {
 	private int views;
 	private int replies;
 	private Date posted_date;
+	private String tag;
 	
 	public QueryEntity(String postId, String question){
 		this.setPostId(postId);
@@ -69,6 +70,14 @@ public class QueryEntity {
 
 	public void setAnswers(List<String> answers) {
 		this.answers = answers;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 	
 	
