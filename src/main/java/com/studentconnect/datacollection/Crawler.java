@@ -1,4 +1,4 @@
-package com.studentconnect; 
+package com.studentconnect.datacollection; 
 
 import java.io.BufferedReader;
 import java.io.File;

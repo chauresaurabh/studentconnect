@@ -1,4 +1,4 @@
-package com.studentconnect;
+package com.studentconnect.datacollection;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
