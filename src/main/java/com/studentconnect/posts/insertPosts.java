@@ -7,14 +7,13 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import facebook4j.internal.org.json.JSONException;
 
 public class insertPosts {
 	List<QueryEntity> questions;
 	List<ResponseEntity> answers;
 	public static int query_id =  1;
 	public static int response_id = 1;
-	
+
 	public insertPosts(){
 		questions = new ArrayList<QueryEntity>();
 		answers = new ArrayList<ResponseEntity>();
