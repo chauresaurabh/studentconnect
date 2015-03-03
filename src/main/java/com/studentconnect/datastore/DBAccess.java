@@ -3,7 +3,10 @@ package com.studentconnect.datastore;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +26,10 @@ public class DBAccess {
 	private final static String INSERT_QUERY_ENTITY = "insert into query_entity (post_id, question, no_replies, no_views, posted_date) values (?,?,?,?,?);";
 	private final static String INSERT_RESPONSE_ENTITY = "insert into response_entity (response_id, response, upvotes, downvotes,posted_date) values (?,?,?,?,?);";
 	private final static String INSERT_QUERY_RESPONSE_ENTITY = "insert into query_response_entity (post_id, response_id) values (?,?);";
+	
+	private final static String SELECT_QUERY_ENTITY = "SELECT * from query_entity where post_id in (";
+	private final static String SELECT_RESPONSE_ENTITY = "SELECT * from response_entity where response_id in (";
+	private final static String SELECT_QUERY_RESPONSE_ENTITY = "SELECT response_id from query_response_entity where post_id in (";
 	
 	public static void main(String[] args){
 		getConnection();
@@ -173,5 +180,111 @@ public class DBAccess {
 		return true;
 	}
 
+	public static List<QueryEntity> getQueryEntity(List<String> postIds){
+		List<QueryEntity> posts = new ArrayList<QueryEntity> ();
+		QueryEntity post = null;
+		
+		if(conn == null)
+			return posts;
+		
+		StringBuilder selectIds = new StringBuilder();
+		for(String id: postIds){
+			selectIds.append(id);
+			selectIds.append(',');
+		}
+		selectIds.deleteCharAt(selectIds.length()-1);
+		selectIds.append(");");
+		
+		try {
+			 Statement st = conn.createStatement();
+			 
+			 ResultSet rs = st.executeQuery(SELECT_QUERY_ENTITY + selectIds.toString());
+			 while(rs.next()){
+				 
+				 post = new QueryEntity(rs.getString(0), rs.getString(1));
+				 post.setReplies(rs.getInt(3));
+				 post.setTag(rs.getString(6));
+				 post.setViews(rs.getInt(4));
+				 post.setPosted_date(rs.getDate(5));
+				 posts.add(post);
+			 }
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return posts;
+		
+	}
+	
+	public static List<ResponseEntity> getResponseEntity(List<String> answerIds){
+		List<ResponseEntity> responses = new ArrayList<ResponseEntity> ();
+		ResponseEntity response = null;
+		
+
+		StringBuilder selectIds = new StringBuilder();
+		for(String id: answerIds){
+			selectIds.append(id);
+			selectIds.append(',');
+		}
+		selectIds.deleteCharAt(selectIds.length()-1);
+		selectIds.append(");");
+		
+		if(conn == null)
+			return responses;
+		
+		try {
+			 Statement st = conn.createStatement();
+			 
+			 ResultSet rs = st.executeQuery(SELECT_RESPONSE_ENTITY);
+			 while(rs.next()){
+				 
+				 response = new ResponseEntity(rs.getString(0), rs.getString(1));
+				 response.setUpVotes(rs.getInt(3));
+				 response.setDownVotes(rs.getInt(4));
+				 response.setPostedDate(rs.getDate(5));
+				 responses.add(response);
+			 }
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return responses;
+		
+	}
+	
+	public static List<String> getQueryResponseEntity(List<String> postIds){
+		List<String> records = new ArrayList<String> ();
+		
+		if(conn == null)
+			return records;
+		
+		StringBuilder selectIds = new StringBuilder();
+		for(String id: postIds){
+			selectIds.append(id);
+			selectIds.append(',');
+		}
+		selectIds.deleteCharAt(selectIds.length()-1);
+		selectIds.append(");");
+		
+		try {
+			 Statement st = conn.createStatement();
+			 
+			 ResultSet rs = st.executeQuery(SELECT_QUERY_RESPONSE_ENTITY + selectIds.toString());
+			 while(rs.next()){
+				 	records.add(rs.getString(0));
+			 }
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return records;
+		
+	}
+	
 
 }
